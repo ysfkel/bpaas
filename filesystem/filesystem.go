@@ -19,7 +19,6 @@ func CreateConfigDirIfNotExists() error {
 	}
 
 	if IsNotExistsConfigDirectory(configPath) {
-		fmt.Println("...creating  ", configPath)
 		return CreateDirectory(configPath)
 	}
 
