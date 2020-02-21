@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"sync"
 
 	viperObj "github.com/spf13/viper"
@@ -87,6 +88,7 @@ func bindDefaultConfigurations(viper *viperObj.Viper, configPath string, fileNam
 	err := viper.ReadInConfig()
 
 	if err != nil {
+		fmt.Println("..viper error ", err)
 		return nil, err
 	}
 

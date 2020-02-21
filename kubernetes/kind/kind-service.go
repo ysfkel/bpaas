@@ -6,11 +6,8 @@ import (
 	"os/exec"
 
 	"github.com/ysfkel/bpaas/config"
+	"github.com/ysfkel/bpaas/filesystem"
 	k8s "github.com/ysfkel/bpaas/kubernetes"
-)
-
-const (
-	configDir = "./config/clusters/"
 )
 
 type KubernetesService struct {
@@ -22,6 +19,12 @@ func NewKubernetesService() k8s.IKubernetesService {
 }
 
 func (k *KubernetesService) CreateCluster(name string) error {
+
+	err := filesystem.CreateConfigDirIfNotExists()
+
+	if err != nil {
+		return err
+	}
 
 	e := exec.Command("kind", "create", "cluster", "--name", name).Run()
 
@@ -46,6 +49,12 @@ func (k *KubernetesService) DestroyCluster(clusterName string) error {
 
 func (k *KubernetesService) GetCertificateAuthority(clusterName string) (string, error) {
 
+	configDir, err := filesystem.GetConfigPath()
+
+	if err != nil {
+		return "", err
+	}
+
 	c, err := config.NewConfigurationManager(configDir, clusterName)
 
 	if err != nil {
@@ -57,6 +66,12 @@ func (k *KubernetesService) GetCertificateAuthority(clusterName string) (string,
 }
 func (k *KubernetesService) GetClientCertificate(clusterName string) (string, error) {
 
+	configDir, err := filesystem.GetConfigPath()
+
+	if err != nil {
+		return "", err
+	}
+
 	c, err := config.NewConfigurationManager(configDir, clusterName)
 
 	if err != nil {
@@ -66,6 +81,13 @@ func (k *KubernetesService) GetClientCertificate(clusterName string) (string, er
 	return c.GetClientCertificate(), nil
 }
 func (k *KubernetesService) GetClientKey(clusterName string) (string, error) {
+
+	configDir, err := filesystem.GetConfigPath()
+
+	if err != nil {
+		return "", err
+	}
+
 	c, err := config.NewConfigurationManager(configDir, clusterName)
 
 	if err != nil {
@@ -76,6 +98,12 @@ func (k *KubernetesService) GetClientKey(clusterName string) (string, error) {
 }
 
 func (k *KubernetesService) GetClusterIP(clusterName string) (string, error) {
+
+	configDir, err := filesystem.GetConfigPath()
+
+	if err != nil {
+		return "", err
+	}
 
 	c, err := config.NewConfigurationManager(configDir, clusterName)
 
@@ -98,6 +126,12 @@ func writeConfig(clusterName string) error {
 
 func writeToYAMLFile(data []byte, fileName string) error {
 
+	configDir, err := filesystem.GetConfigPath()
+
+	if err != nil {
+		return err
+	}
+
 	filePath := fmt.Sprintf("%v/%v.yaml", configDir, fileName)
 
 	file, err := os.Create(filePath)
@@ -105,6 +139,7 @@ func writeToYAMLFile(data []byte, fileName string) error {
 		return err
 	}
 
+	fmt.Println("..writing config to ", filePath)
 	_, err = file.WriteString(string(data))
 
 	if err != nil {
@@ -116,9 +151,15 @@ func writeToYAMLFile(data []byte, fileName string) error {
 
 func removeFile(fileName string) error {
 
+	configDir, err := filesystem.GetConfigPath()
+
+	if err != nil {
+		return err
+	}
+
 	filePath := fmt.Sprintf("%v/%v.yaml", configDir, fileName)
 
-	err := os.Remove(filePath)
+	err = os.Remove(filePath)
 	if err != nil {
 		return err
 	}

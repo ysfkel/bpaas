@@ -53,6 +53,7 @@ func (c *Cluster) GetCreateCommand() *cobra.Command {
 		Short: "create",
 		Long:  `create`,
 		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("..creating cluster")
 			createCluster(cmd, k8sKind.NewKubernetesService())
 		},
 	}
