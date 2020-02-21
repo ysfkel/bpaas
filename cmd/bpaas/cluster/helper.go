@@ -36,7 +36,7 @@ func destroyCluster(cmd *cobra.Command, KubernetesService k8s.IKubernetesService
 	err := KubernetesService.DestroyCluster(name)
 
 	if err != nil {
-		printError("could not create cluster")
+		printError(fmt.Sprintf("could not delete cluster %s", err))
 		return err
 	}
 	return nil
@@ -53,7 +53,7 @@ func getCertificateAuthority(cmd *cobra.Command, KubernetesService k8s.IKubernet
 	ca, err := KubernetesService.GetCertificateAuthority(name)
 
 	if err != nil {
-		return printError(fmt.Sprintf("could not fetch certifate authority for cluster %s", name))
+		return printError(fmt.Sprintf("could not fetch certifate authority for cluster %s %s", name, err))
 	}
 
 	fmt.Println(ca)
@@ -72,7 +72,7 @@ func getClientCertificate(cmd *cobra.Command, KubernetesService k8s.IKubernetesS
 	ca, err := KubernetesService.GetClientCertificate(name)
 
 	if err != nil {
-		return printError(fmt.Sprintf("could not fetch client certifate for cluster %s", name))
+		return printError(fmt.Sprintf("could not fetch client certifate for cluster %s %s", name, err))
 	}
 
 	fmt.Println(ca)
@@ -91,7 +91,7 @@ func getClientKey(cmd *cobra.Command, KubernetesService k8s.IKubernetesService) 
 	ck, err := KubernetesService.GetClientKey(name)
 
 	if err != nil {
-		return printError(fmt.Sprintf("could not fetch client key for cluster %s", name))
+		return printError(fmt.Sprintf("could not fetch client key for cluster %s %s", name, err))
 	}
 
 	fmt.Println(ck)
@@ -110,7 +110,7 @@ func getClusterIP(cmd *cobra.Command, KubernetesService k8s.IKubernetesService) 
 	ck, err := KubernetesService.GetClusterIP(name)
 
 	if err != nil {
-		return printError(fmt.Sprintf("could not fetch cluster ip  for cluster %s", name))
+		return printError(fmt.Sprintf("could not fetch cluster ip  for cluster %s %s", name, err))
 	}
 
 	fmt.Println(ck)
