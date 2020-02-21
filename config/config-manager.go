@@ -88,7 +88,7 @@ func bindDefaultConfigurations(viper *viperObj.Viper, configPath string, fileNam
 	err := viper.ReadInConfig()
 
 	if err != nil {
-		fmt.Println("..viper error ", err)
+		fmt.Println("..config error", err)
 		return nil, err
 	}
 
