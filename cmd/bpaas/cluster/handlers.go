@@ -1,7 +1,6 @@
 package cluster
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -20,7 +19,7 @@ func createCluster(cmd *cobra.Command, KubernetesService k8s.IKubernetesService)
 
 	if err != nil {
 		printError("could not create cluster")
-		return err
+		return nil
 	}
 
 	return nil
@@ -37,7 +36,7 @@ func destroyCluster(cmd *cobra.Command, KubernetesService k8s.IKubernetesService
 
 	if err != nil {
 		printError(fmt.Sprintf("could not delete cluster %s", err))
-		return err
+		return nil
 	}
 	return nil
 }
@@ -121,5 +120,5 @@ func getClusterIP(cmd *cobra.Command, KubernetesService k8s.IKubernetesService) 
 func printError(msg string) error {
 	fmtmsg := fmt.Sprintf("\n %s \n", msg)
 	fmt.Println(fmtmsg)
-	return errors.New(fmtmsg)
+	return nil
 }
