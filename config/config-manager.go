@@ -2,14 +2,9 @@ package config
 
 import (
 	"fmt"
-	"sync"
 
 	viperObj "github.com/spf13/viper"
 )
-
-var configManager *ConfigurationManager
-
-var once sync.Once
 
 type ConfigurationManager struct {
 	configuration *Configuration
@@ -21,19 +16,13 @@ func NewConfigurationManager(configPath string, fileName string) (*Configuration
 
 	var config *Configuration
 
-	once.Do(func() {
-		config, err = createConfiguration(configPath, fileName)
+	config, err = createConfiguration(configPath, fileName)
 
-		configManager = &ConfigurationManager{
-			configuration: config,
-		}
-	})
+	configManager := &ConfigurationManager{
+		configuration: config,
+	}
 
 	return configManager, err
-}
-
-func GetConfigManager() *ConfigurationManager {
-	return configManager
 }
 
 func (cm *ConfigurationManager) GetApiVersion() string {

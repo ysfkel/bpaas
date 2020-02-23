@@ -111,8 +111,6 @@ func (k *KubernetesService) GetClusterIP(clusterName string) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("---init conf ", c, err)
-
 	return c.GetServer(), nil
 }
 
