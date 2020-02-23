@@ -41,18 +41,54 @@ func (cm *ConfigurationManager) GetApiVersion() string {
 }
 
 func (cm *ConfigurationManager) GetServer() string {
+
+	if cm.configuration == nil {
+		return ""
+	}
+
+	if len(cm.configuration.Clusters) == 0 {
+		return ""
+	}
+
 	return cm.configuration.Clusters[0].Cluster.Server
 }
 
 func (cm *ConfigurationManager) GetCertificateAuthority() string {
+
+	if cm.configuration == nil {
+		return ""
+	}
+
+	if len(cm.configuration.Clusters) == 0 {
+		return ""
+	}
+
 	return cm.configuration.Clusters[0].Cluster.CertificateAuthorityData
 }
 
 func (cm *ConfigurationManager) GetClientCertificate() string {
+
+	if cm.configuration == nil {
+		return ""
+	}
+
+	if len(cm.configuration.Users) == 0 {
+		return ""
+	}
+
 	return cm.configuration.Users[0].User.ClientCertificateData
 }
 
 func (cm *ConfigurationManager) GetClientKey() string {
+
+	if cm.configuration == nil {
+		return ""
+	}
+
+	if len(cm.configuration.Users) == 0 {
+		return ""
+	}
+
 	return cm.configuration.Users[0].User.ClientKeyData
 }
 
