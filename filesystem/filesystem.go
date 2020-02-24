@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	configDirPath = "/.bpaas/config/clusters"
+	configDirPath = ".bpaas/config/clusters"
 )
 
 func CreateConfigDirIfNotExists() error {
