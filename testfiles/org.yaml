@@ -1,0 +1,13 @@
+organizationRequest:
+  companyId: consensys-32
+  companyName: microsoft2
+  orgName: microsoft2
+  description: this is a test
+  chaincodeCount: 3
+  peerCount: 3
+  ordererCount: 4
+  consortiumName: banknet
+  dbBackend: mysql
+  consortiumDescription: this is a test
+  userName: ykel
+  userEmail: ykel@gmail.com

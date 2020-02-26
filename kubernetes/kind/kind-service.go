@@ -20,7 +20,13 @@ func NewKubernetesService() k8s.IKubernetesService {
 
 func (k *KubernetesService) CreateCluster(name string) error {
 
-	err := filesystem.CreateConfigDirIfNotExists()
+	path, err := filesystem.GetClusterConfigPath()
+
+	if err != nil {
+		return err
+	}
+
+	err = filesystem.CreateDirIfNotExists(path)
 
 	if err != nil {
 		return err
@@ -49,7 +55,7 @@ func (k *KubernetesService) DestroyCluster(clusterName string) error {
 
 func (k *KubernetesService) GetCertificateAuthority(clusterName string) (string, error) {
 
-	configDir, err := filesystem.GetConfigPath()
+	configDir, err := filesystem.GetClusterConfigPath()
 
 	if err != nil {
 		return "", err
@@ -66,7 +72,7 @@ func (k *KubernetesService) GetCertificateAuthority(clusterName string) (string,
 }
 func (k *KubernetesService) GetClientCertificate(clusterName string) (string, error) {
 
-	configDir, err := filesystem.GetConfigPath()
+	configDir, err := filesystem.GetClusterConfigPath()
 
 	if err != nil {
 		return "", err
@@ -82,7 +88,7 @@ func (k *KubernetesService) GetClientCertificate(clusterName string) (string, er
 }
 func (k *KubernetesService) GetClientKey(clusterName string) (string, error) {
 
-	configDir, err := filesystem.GetConfigPath()
+	configDir, err := filesystem.GetClusterConfigPath()
 
 	if err != nil {
 		return "", err
@@ -99,7 +105,7 @@ func (k *KubernetesService) GetClientKey(clusterName string) (string, error) {
 
 func (k *KubernetesService) GetClusterIP(clusterName string) (string, error) {
 
-	configDir, err := filesystem.GetConfigPath()
+	configDir, err := filesystem.GetClusterConfigPath()
 
 	if err != nil {
 		return "", err
@@ -126,7 +132,7 @@ func writeConfig(clusterName string) error {
 
 func writeToYAMLFile(data []byte, fileName string) error {
 
-	configDir, err := filesystem.GetConfigPath()
+	configDir, err := filesystem.GetClusterConfigPath()
 
 	if err != nil {
 		return err
@@ -151,7 +157,7 @@ func writeToYAMLFile(data []byte, fileName string) error {
 
 func removeFile(fileName string) error {
 
-	configDir, err := filesystem.GetConfigPath()
+	configDir, err := filesystem.GetClusterConfigPath()
 
 	if err != nil {
 		return err

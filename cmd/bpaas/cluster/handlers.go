@@ -12,7 +12,7 @@ func createCluster(cmd *cobra.Command, KubernetesService k8s.IKubernetesService)
 	name, _ := cmd.Flags().GetString("name")
 
 	if name == "" {
-		return printError("cluster name is equired. use -n ")
+		return printError("cluster name is required. use -n ")
 	}
 
 	err := KubernetesService.CreateCluster(name)

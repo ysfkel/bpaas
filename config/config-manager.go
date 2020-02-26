@@ -82,6 +82,22 @@ func (cm *ConfigurationManager) GetClientKey() string {
 	return cm.configuration.Users[0].User.ClientKeyData
 }
 
+func (cm *ConfigurationManager) GetJWT() string {
+
+	if cm.configuration == nil {
+		return ""
+	}
+	return cm.configuration.Token.Jwt
+}
+
+func (cm *ConfigurationManager) GetOrganizationRequest() *OrganizationRequest {
+
+	if cm.configuration == nil {
+		return nil
+	}
+	return &cm.configuration.OrganizationRequest
+}
+
 func createConfiguration(configPath string, fileName string) (*Configuration, error) {
 
 	var configuration Configuration

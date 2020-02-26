@@ -3,31 +3,20 @@ package filesystem
 import (
 	"fmt"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 const (
-	configDirPath = ".bpaas/config/clusters"
+	configDirPath     = ".bpaas/config/clusters"
+	userConfigDirPath = ".bpaas/config/user"
 )
 
-func CreateConfigDirIfNotExists() error {
+//CreateConfigDirIfNotExists
+func CreateDirIfNotExists(path string) error {
 
-	configPath, err := GetConfigPath()
-
-	if err != nil {
-		fmt.Println("...error retrieving home path", err)
-		return err
-	}
-
-	if IsNotExistsConfigDirectory(configPath) {
-		return CreateDirectory(configPath)
-	}
-
-	if err != nil && !os.IsNotExist(err) {
-		fmt.Println("...error ", err)
-		return err
-	} else if err != nil {
-		fmt.Println("...error  ", err)
-		return err
+	if IsNotExistsConfigDirectory(path) {
+		return CreateDirectory(path)
 	}
 
 	return nil
@@ -44,7 +33,7 @@ func IsNotExistsConfigDirectory(configPath string) bool {
 	return false
 }
 
-func GetConfigPath() (string, error) {
+func GetClusterConfigPath() (string, error) {
 
 	home, err := GetUserHomeDirectory()
 
@@ -57,6 +46,21 @@ func GetConfigPath() (string, error) {
 
 	return path, nil
 }
+
+func GetUserConfigPath() (string, error) {
+
+	home, err := GetUserHomeDirectory()
+
+	if err != nil {
+		fmt.Println("...error retrieving home path", err)
+		return "", err
+	}
+
+	path := fmt.Sprintf("%s/%s", home, userConfigDirPath)
+
+	return path, nil
+}
+
 func GetUserHomeDirectory() (string, error) {
 	homeDir, err := os.UserHomeDir()
 
@@ -77,4 +81,38 @@ func CreateDirectory(path string) error {
 
 	return nil
 
+}
+
+func WriteToYAMLFile(data string, fileName string, configDir string) error {
+
+	if err := CreateDirIfNotExists(configDir); err != nil {
+		return err
+	}
+
+	filePath := fmt.Sprintf("%v/%v.yaml", configDir, fileName)
+
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("..writing config to ", filePath)
+	_, err = file.WriteString(data)
+
+	if err != nil {
+		file.Close()
+		return err
+	}
+	return nil
+}
+
+func CreateYAML(data interface{}) (string, error) {
+
+	ym, err := yaml.Marshal(data)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(ym), nil
 }
