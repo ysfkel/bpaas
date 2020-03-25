@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	k8s "github.com/ysfkel/bpaas/kubernetes"
+	k8s "github.com/ysfkel/kindsdk/kubernetes"
 )
 
 func createCluster(cmd *cobra.Command, KubernetesService k8s.IKubernetesService) error {
