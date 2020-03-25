@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	k8sKind "github.com/ysfkel/kindsdk/kubernetes/kind"
+	k8sKind "github.com/ysfkel/kubernetes/kubernetes/kind"
 )
 
 type Cluster struct {
